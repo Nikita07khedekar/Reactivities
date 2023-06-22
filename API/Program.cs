@@ -13,6 +13,17 @@ builder.Services.AddDbContext<DataContext>(opt =>
 {
     opt.UseSqlite(builder.Configuration.GetConnectionString("NikEntities"));
 });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+        });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +34,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowOrigin"); // Placed before other middleware
 
 app.UseAuthorization();
 
@@ -40,7 +52,7 @@ try
 catch (Exception ex)
 {
     var logger = services.GetRequiredService<Logger<Program>>();
-    logger.LogError(ex, "An Error Occured During the Migration!!");
+    logger.LogError(ex, "An Error Occurred During the Migration!!");
 }
 
 app.Run();

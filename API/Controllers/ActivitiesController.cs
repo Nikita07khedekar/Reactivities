@@ -1,10 +1,12 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace API.Controllers
 {
+    [EnableCors("AllowOrigin")]
     public class ActivitiesController : BaseApiController
     {
         private readonly DataContext _context;
